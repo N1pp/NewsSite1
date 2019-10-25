@@ -20,7 +20,6 @@ class CreateNewsTable extends Migration
             $table->text('content');
             $table->integer('rate')->default(0);
             $table->integer('comments')->default(0);
-            $table->string('images')->default(0);
             $table->timestamps();
             $table->index('user_id');
         });

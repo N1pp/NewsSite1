@@ -3,9 +3,13 @@
 @section('content')
 <div class="container">
     <div class="border-bottom border-dark">
-        <div class="container justify-content-center align-items-center">
+        <div class="row">
             @if($new->images)
-                    <img class="img-fluid" src="{{asset('/storage/' . $new->images)}}">
+                @foreach($new->images as $image)
+                    <div class="col">
+                        <img class="img" src="{{asset('/storage/' . $image->path)}}">
+                    </div>
+                @endforeach
             @endif
         </div>
         <div class="row justify-content-md-center">

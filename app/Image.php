@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-    protected $fillable = ['path'];
-    public function news()
-    {
-        return $this->belongsToMany('App\News');
-    }
+    protected $fillable = ['path','news_id'];
+
 }

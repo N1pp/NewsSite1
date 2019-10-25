@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Image;
+use App\NewsImage;
 use App\NewsTags;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -35,10 +37,21 @@ class NewsController extends Controller
                 ->withInput()
                 ->withErrors($validator);
         }
-        $path = $request->file('img')->store('uploads', 'public');
+        $images = $request->file('img');
+        //$images->store('uploads', 'public');
         $news = News::create($request->all());
-        $news->images = $path;
+        foreach ($images as $im){
+            $path = $im->store('uploads', 'public');
+            $img = new Image();
+            $img->path = $path;
+            $img->news_id = $news->id;
+            $img->save();
+        }
+        //$path = $request->file('img')->store('uploads', 'public');
+
+       // $news->images = $path;
         $news->save();
+
         $tags = explode(', ', $request->tags);
         foreach ($tags as $str) {
             if(\App\Tags::where('name',trim($str))->get()->first()){

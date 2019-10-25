@@ -27,7 +27,7 @@
         </div>
         <div class="form-group">
             Можете добавить картинку:
-            <input type="file" name="img">
+            <input type="file" name="img[]" multiple/>
         </div>
         <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
         <button type="submit" class="btn btn-primary">Добавить</button>
