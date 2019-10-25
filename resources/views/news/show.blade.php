@@ -5,9 +5,7 @@
     <div class="border-bottom border-dark">
         <div class="container justify-content-center align-items-center">
             @if($new->images)
-
                     <img class="img-fluid" src="{{asset('/storage/' . $new->images)}}">
-
             @endif
         </div>
         <div class="row justify-content-md-center">
