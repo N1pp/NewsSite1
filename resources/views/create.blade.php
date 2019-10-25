@@ -1,5 +1,4 @@
 @extends('layouts.app')
-<?php use App\User;?>
 @section('content')
 @if ($errors->any())
     <div class="alert alert-danger">

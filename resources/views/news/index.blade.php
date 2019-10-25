@@ -16,7 +16,7 @@
                     <div class="col-1">Comments:{{$new->comments}}</div>
                     <div class="col-8">Tags:
                         @foreach($new->tags()->get() as $tags)
-                            {{$tags->name.' '}}
+                            {{$tags->name.' '}}|
                         @endforeach
                     </div>
                     <div class="col-3">Date:{{$new->created_at}}</div>

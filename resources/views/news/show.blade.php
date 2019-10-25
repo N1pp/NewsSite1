@@ -24,7 +24,7 @@
             <div class="col-4">
                 Tags:
                 @foreach($new->tags()->get() as $tags)
-                    {{$tags->name.' '}}
+                    {{$tags->name.' '}}|
                 @endforeach
             </div>
         </div>
