@@ -7,6 +7,7 @@ use App\NewsImage;
 use App\NewsTags;
 use \App\Tags;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \App\News;
@@ -82,6 +83,8 @@ class NewsController extends Controller
         News::where('id', $request->news_id)->delete();
         Comment::where('news_id',$request->news_id)->delete();
         Ratings::where('news_id',$request->news_id)->delete();
+        Storage::delete(Image::where('news_id',$request->news_id)->path);
+        Image::where('news_id',$request->news_id)->delete();
         return redirect('/home');
     }
 
