@@ -21,7 +21,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/news','NewsController@index');
 Route::get('/create','NewsController@createW')->name('createNews');
 Route::post('/create','NewsController@create');
-Route::get('/news/{id}','NewsController@show')->name('news');
+Route::get('/find/{id}','NewsController@find');
 Route::post('/news/editRate','RatingsController@rate');
 Route::post('/news/editComment','CommentController@comment');
+Route::get('/news/{id}','NewsController@show')->name('news');
 Route::post('/delete','NewsController@delete')->name('del');
+

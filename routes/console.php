@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
-
+use Illuminate\Support\Facades\Cookie;
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -13,6 +13,7 @@ use Illuminate\Foundation\Inspiring;
 |
 */
 
-Artisan::command('test', function (\Illuminate\Http\Request $re) {
-    $n = \App\News::create(request()->all());
-})->describe('Display an inspiring quote');
+Artisan::command('test', function () {
+    $user = App\User::find(1);
+
+});

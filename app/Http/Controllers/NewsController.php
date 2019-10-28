@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Image;
 use App\NewsImage;
 use App\NewsTags;
+use \App\Tags;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -38,18 +39,16 @@ class NewsController extends Controller
                 ->withErrors($validator);
         }
         $images = $request->file('img');
-        //$images->store('uploads', 'public');
         $news = News::create($request->all());
-        foreach ($images as $im){
-            $path = $im->store('uploads', 'public');
-            $img = new Image();
-            $img->path = $path;
-            $img->news_id = $news->id;
-            $img->save();
+        if($images){
+            foreach ($images as $im){
+                $path = $im->store('uploads', 'public');
+                $img = new Image();
+                $img->path = $path;
+                $img->news_id = $news->id;
+                $img->save();
+            }
         }
-        //$path = $request->file('img')->store('uploads', 'public');
-
-       // $news->images = $path;
         $news->save();
 
         $tags = explode(', ', $request->tags);
@@ -70,6 +69,12 @@ class NewsController extends Controller
             }
         }
         return redirect()->route('news', [$news]);
+    }
+
+    public function find($id){
+        $tags = \App\Tags::where('id', $id)->get()->first();
+        $news = $tags->news;
+        return view('news.index',compact('news'));
     }
 
     public function delete(Request $request){
