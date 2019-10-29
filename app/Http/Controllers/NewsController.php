@@ -73,7 +73,7 @@ class NewsController extends Controller
         }
         foreach (Sub::where('auth_id',$request->user_id)->get() as $sub){
             //SendMail::dispatch(User::find($sub->user_id)->first(),$news,User::find($news->user_id)->name,'/news/' . $news->id);
-            SendMail::dispatch(User::find($sub->user_id)->first(),new NewPost($news,User::find($news->user_id)->name,'/news/' . $news->id));
+            SendMail::dispatch(User::find($sub->user_id)->first(),new NewPost($news,User::find($news->user_id)->name,'/news/' . $news->id))->delay(now()->addSeconds(30));
             //User::find($sub->user_id)->notify(new NewPost($news,User::find($news->user_id)->name,'/news/' . $news->id));
         }
         return redirect()->route('news', [$news]);
