@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Sub;
+use App\User;
 use App\Image;
-use App\NewsImage;
 use App\NewsTags;
+use App\Notifications\NewPost;
 use \App\Tags;
+use App\Jobs\SendMail;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \App\News;
@@ -52,29 +54,38 @@ class NewsController extends Controller
         }
         $news->save();
 
-        $tags = explode(', ', $request->tags);
+        $tags = explode(',', $request->tags);
         foreach ($tags as $str) {
-            if(\App\Tags::where('name',trim($str))->get()->first()){
-                $nt = new \App\NewsTags;
+            if(Tags::where('name',trim($str))->get()->first()){
+                $nt = new NewsTags;
                 $nt->news_id = $news->id;
-                $nt->tags_id = \App\Tags::where('name',trim($str))->get()->first()->id;
+                $nt->tags_id = Tags::where('name',trim($str))->get()->first()->id;
                 $nt->save();
             }else{
-                $tag = new \App\Tags;
+                $tag = new Tags;
                 $tag->name = trim($str);
                 $tag->save();
-                $nt = new \App\NewsTags;
+                $nt = new NewsTags;
                 $nt->news_id = $news->id;
-                $nt->tags_id = \App\Tags::where('name',trim($str))->get()->first()->id;
+                $nt->tags_id = Tags::where('name',trim($str))->get()->first()->id;
                 $nt->save();
             }
+        }
+        foreach (Sub::where('auth_id',$request->user_id)->get() as $sub){
+            //SendMail::dispatch(User::find($sub->user_id)->first(),$news,User::find($news->user_id)->name,'/news/' . $news->id);
+            SendMail::dispatch(User::find($sub->user_id)->first(),new NewPost($news,User::find($news->user_id)->name,'/news/' . $news->id));
+            //User::find($sub->user_id)->notify(new NewPost($news,User::find($news->user_id)->name,'/news/' . $news->id));
         }
         return redirect()->route('news', [$news]);
     }
 
-    public function find($id){
+    public function findTag($id){
         $tags = \App\Tags::where('id', $id)->get()->first();
         $news = $tags->news;
+        return view('news.index',compact('news'));
+    }
+    public function findAuth($id){
+        $news = News::where('user_id',$id)->get();
         return view('news.index',compact('news'));
     }
 
@@ -83,7 +94,7 @@ class NewsController extends Controller
         News::where('id', $request->news_id)->delete();
         Comment::where('news_id',$request->news_id)->delete();
         Ratings::where('news_id',$request->news_id)->delete();
-        Storage::delete(Image::where('news_id',$request->news_id)->path);
+        //Storage::delete(Image::where('news_id',$request->news_id)->first()->path);
         Image::where('news_id',$request->news_id)->delete();
         return redirect('/home');
     }

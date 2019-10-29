@@ -42,4 +42,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\News');
     }
+    protected function subs(){
+        return $this->belongsToMany('App\User','sub','user_id','auth_id');
+    }
 }
