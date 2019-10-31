@@ -2,7 +2,7 @@
 <?php use App\User;?>
 @section('content')
 <div class="container" >
-    @if(isset($news))
+    @if($news->count()>0)
         @foreach($news as $new)
             <div class="container border border-dark rounded" style="background-color: #2ffff7">
                     <div class="row">
@@ -24,6 +24,7 @@
                     </div>
             </div>
         @endforeach
+        {{$news->links()}}
     @else No available news :(
     @endif
 </div>

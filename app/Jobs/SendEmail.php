@@ -7,29 +7,24 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Notifications\NewPost;
 
-class SendMail implements ShouldQueue
+class SendEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $user;
+    protected $mail;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    protected $message;
-    protected $user;
-    /*public function __construct($user,$news,$us,$url)
+    public function __construct($user,$mail)
     {
         $this->user = $user;
-        $this->message = new NewPost($news,$us,$url);
-    }*/
-    public function __construct($user,$message)
-    {
-        $this->user = $user;
-        $this->message = $message;
+        $this->mail = $mail;
     }
+
     /**
      * Execute the job.
      *
@@ -37,6 +32,6 @@ class SendMail implements ShouldQueue
      */
     public function handle()
     {
-        $this->user->notify($this->message);
+        $this->user->notify($this->mail);
     }
 }
