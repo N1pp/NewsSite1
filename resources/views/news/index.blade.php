@@ -24,7 +24,7 @@
                     </div>
             </div>
         @endforeach
-        {{$news->links()}}
+        {{//$news->links()}}
     @else No available news :(
     @endif
 </div>
