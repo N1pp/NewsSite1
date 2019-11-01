@@ -19,7 +19,9 @@
             <div class="col-1">
                 Autor: <a href="/findAuth/{{$new->user_id}}">{{User::find($new->user_id)->name}}</a>
             </div>
-            @if(!App\Sub::where('user_id',\Illuminate\Support\Facades\Auth::id())->where('auth_id',$new->user_id)->get()->first())
+            @if(\Illuminate\Support\Facades\Auth::id()==$new->user_id)
+                <div class="col-1">You are author</div>
+            @elseif(!App\Sub::where('user_id',\Illuminate\Support\Facades\Auth::id())->where('auth_id',$new->user_id)->get()->first())
                 <div class="col-1">
                     <form method="POST" action="{{url('/news/editSub')}}">
                         @csrf
@@ -31,14 +33,14 @@
                 </div>
             @else
                 <div class="col-1">
-                    <form method="POST" action="{{url('/news/editSub')}}">
-                        @csrf
-                        <input type="hidden" name="key" value="0">
-                        <input type="hidden" name="auth_id" id="auth_id" value="{{$new->user_id}}">
-                        <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
-                        <button class="btn-light"type="submit">Unsubscribe</button>
-                    </form>
-                </div>
+                <form method="POST" action="{{url('/news/editSub')}}">
+                    @csrf
+                    <input type="hidden" name="key" value="0">
+                    <input type="hidden" name="auth_id" id="auth_id" value="{{$new->user_id}}">
+                    <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
+                    <button class="btn-light"type="submit">Unsubscribe</button>
+                </form>
+            </div>
             @endif
         </div>
         <div class="row">

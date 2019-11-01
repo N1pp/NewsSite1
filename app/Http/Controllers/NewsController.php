@@ -9,6 +9,7 @@ use App\NewsTags;
 use App\Notifications\NewPost;
 use \App\Tags;
 use App\Jobs\SendEmail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \App\News;
@@ -73,9 +74,7 @@ class NewsController extends Controller
         }
         foreach (Sub::where('auth_id',$request->user_id)->get() as $sub){
             $mail = new NewPost($news,User::find($news->user_id)->name,'/news/' . $news->id);
-            //SendMail::dispatch(User::find($sub->user_id)->first(),$news,User::find($news->user_id)->name,'/news/' . $news->id);
-            SendEmail::dispatch(User::find($sub->user_id)->first(),$mail)->delay(now()->addMinute())->onQueue('email');
-            //User::find($sub->user_id)->notify(new NewPost($news,User::find($news->user_id)->name,'/news/' . $news->id));
+            SendEmail::dispatch(User::find($sub->user_id),$mail)->onQueue('email');
         }
         return redirect()->route('news', [$news]);
     }
@@ -95,7 +94,7 @@ class NewsController extends Controller
         News::where('id', $request->news_id)->delete();
         Comment::where('news_id',$request->news_id)->delete();
         Ratings::where('news_id',$request->news_id)->delete();
-        //Storage::delete(Image::where('news_id',$request->news_id)->first()->path);
+        Storage::delete('/' . Image::where('news_id',$request->news_id)->get()->first()->path);
         Image::where('news_id',$request->news_id)->delete();
         return redirect('/home');
     }
