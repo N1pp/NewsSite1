@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewsCreateRequest;
 use App\Sub;
 use App\User;
 use App\Image;
@@ -31,17 +32,9 @@ class NewsController extends Controller
         return view('news.show', compact('new'));
     }
 
-    public function create(Request $request)
+    public function create(NewsCreateRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'content' => 'required'
-        ]);
-        if ($validator->errors()->any()) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors($validator);
-        }
+
         $images = $request->file('img');
         $news = News::create($request->all());
         if($images){

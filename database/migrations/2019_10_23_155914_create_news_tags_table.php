@@ -18,6 +18,9 @@ class CreateNewsTagsTable extends Migration
             $table->integer('tags_id');
             $table->timestamps();
             $table->primary(['news_id', 'tags_id']);
+            $table->foreign('tags_id')
+                ->references('id')->on('tags')
+                ->onDelete('cascade');
         });
     }
 

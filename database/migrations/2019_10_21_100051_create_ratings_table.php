@@ -15,10 +15,13 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->integer('user_id');
-            $table->integer('news_id');
+            $table->integer('news_id')->index();
             $table->integer('value');
             $table->timestamps();
             $table->primary(['user_id','news_id']);
+            $table->foreign('news_id')
+                ->references('id')->on('news')
+                ->onDelete('cascade');
         });
     }
 

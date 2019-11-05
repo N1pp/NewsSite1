@@ -15,9 +15,15 @@ class CreateSubsTable extends Migration
     {
         Schema::create('subs', function (Blueprint $table) {
             $table->integer('user_id');
-            $table->integer('auth_id');
+            $table->integer('author_id');
             $table->timestamps();
             $table->primary(['user_id','auth_id']);
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('author_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 

@@ -16,16 +16,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'NewsController@index');
 
 Auth::routes();
-
+Route::middleware('auth')->group(function () {
+    Route::get('/create','NewsController@createW')->name('createNews');
+    Route::post('/create','NewsController@create');
+    Route::post('/news/editRate','RatingsController@rate');
+    Route::post('/news/editSub','SubsController@sub');
+    Route::post('/news/editComment','CommentController@comment');
+    Route::post('/delete','NewsController@delete')->name('del');
+});
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/news','NewsController@index');
-Route::get('/create','NewsController@createW')->name('createNews');
-Route::post('/create','NewsController@create');
 Route::get('/findTag/{id}','NewsController@findTag');
 Route::get('/findAuth/{id}','NewsController@findAuth');
-Route::post('/news/editRate','RatingsController@rate');
-Route::post('/news/editSub','SubsController@sub');
-Route::post('/news/editComment','CommentController@comment');
 Route::get('/news/{id}','NewsController@show')->name('news');
-Route::post('/delete','NewsController@delete')->name('del');
 

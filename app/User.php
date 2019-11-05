@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -38,11 +39,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function news()
+    public function news() :HasMany
     {
-        return $this->hasMany('App\News');
+        return $this->hasMany(News::class);
     }
-    protected function subs(){
-        return $this->belongsToMany('App\User','sub','user_id','auth_id');
+
+    protected function subs() : BelongsToMany
+    {
+        return $this->belongsToMany(User::class,'sub','user_id','auth_id');
     }
 }
