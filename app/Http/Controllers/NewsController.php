@@ -94,8 +94,10 @@ class NewsController extends Controller
         News::where('id', $request->news_id)->delete();
         Comment::where('news_id',$request->news_id)->delete();
         Ratings::where('news_id',$request->news_id)->delete();
-        Storage::delete('/' . Image::where('news_id',$request->news_id)->get()->first()->path);
-        Image::where('news_id',$request->news_id)->delete();
+        foreach (Image::where('news_id',$request->news_id)->get() as $image){
+            Storage::delete('public/' . $image->path);
+            $image->delete();
+        }
         return redirect('/home');
     }
 

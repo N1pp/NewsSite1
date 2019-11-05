@@ -1,8 +1,11 @@
 <?php
 
+use App\Image;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Storage;
+
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -15,8 +18,9 @@ use Illuminate\Support\Facades\Cookie;
 */
 
 Artisan::command('test', function () {
-    Cache::put('key', 'value');
-    Cache::put('key', '1');
-    Cache::flush();
-    print_r(Cache::get('key'));
+    $images = Image::where('news_id', 10)->get();
+    foreach ($images as $image){
+        print_r($image->path);
+        Storage::delete('public/' . $image->path);
+    }
 });
