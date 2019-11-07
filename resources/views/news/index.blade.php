@@ -8,7 +8,7 @@
                     <div class="row">
                         <div class="col-1">Rating:{{$new->rate}}</div>
                         <div class="col-10"><h1><a href="/news/{{$new->id}}">{{$new->title}}</a></h1></div>
-                        <div class="col-1">Autor: <a href="/findAuth/{{$new->user_id}}">{{User::find($new->user_id)->name}}</a></div>
+                        <div class="col-1">Autor: <a href="/news/findByAuthor/{{$new->user_id}}">{{User::find($new->user_id)->name}}</a></div>
                     </div>
                     <div class="row">
                         <div class="col">{{$new->content}}</div>
@@ -17,7 +17,7 @@
                         <div class="col-1">Comments:{{$new->comments}}</div>
                         <div class="col-8">Tags:
                             @foreach($new->tags as $tags)
-                                <a href="/findTag/{{$tags->id}}">{{$tags->name.' '}}</a>|
+                                <a href="/news/findByTag/{{$tags->id}}">{{$tags->name.' '}}</a>|
                             @endforeach
                         </div>
                         <div class="col-3">Date:{{$new->created_at}}</div>

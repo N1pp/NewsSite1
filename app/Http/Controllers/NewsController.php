@@ -22,21 +22,22 @@ class NewsController extends Controller
     public function index()
     {
         $news = News::all()->sortByDesc('created_at');
-        //$news = News::paginate(3);
         return view('news.index', compact('news'));
     }
 
-    public function show($id)
+    public function showArticle($id)
     {
         $new = News::where('id', $id)->first();
         return view('news.show', compact('new'));
     }
 
-    public function create(NewsCreateRequest $request)
+    public function createNews(NewsCreateRequest $request)
     {
 
-        $images = $request->file('img');
         $news = News::create($request->all());
+        $news->save();
+
+        $images = $request->file('img');
         if($images){
             foreach ($images as $im){
                 $path = $im->store('uploads', 'public');
@@ -46,7 +47,6 @@ class NewsController extends Controller
                 $img->save();
             }
         }
-        $news->save();
 
         $tags = explode(',', $request->tags);
         foreach ($tags as $str) {
@@ -65,28 +65,28 @@ class NewsController extends Controller
                 $nt->save();
             }
         }
-        foreach (Sub::where('auth_id',$request->user_id)->get() as $sub){
-            $mail = new NewPost($news,User::find($news->user_id)->name,'/news/' . $news->id);
-            SendEmail::dispatch(User::find($sub->user_id),$mail)->onQueue('email');
-        }
+
+        SendEmail::dispatch($news)->onQueue('email');
+
         return redirect()->route('news', [$news]);
     }
 
-    public function findTag($id){
-        $tags = \App\Tags::where('id', $id)->get()->first();
-        $news = $tags->news;
+    public function findNewsByTag($id)
+    {
+        $tag = \App\Tags::find($id);
+        $news = $tag->news;
         return view('news.index',compact('news'));
     }
-    public function findAuth($id){
+
+    public function findNewsByAuthor($id)
+    {
         $news = News::where('user_id',$id)->get();
         return view('news.index',compact('news'));
     }
 
-    public function delete(Request $request){
-        NewsTags::where('news_id',$request->news_id)->delete();
+    public function deleteNews(Request $request)
+    {
         News::where('id', $request->news_id)->delete();
-        Comment::where('news_id',$request->news_id)->delete();
-        Ratings::where('news_id',$request->news_id)->delete();
         foreach (Image::where('news_id',$request->news_id)->get() as $image){
             Storage::delete('public/' . $image->path);
             $image->delete();
@@ -94,7 +94,7 @@ class NewsController extends Controller
         return redirect('/home');
     }
 
-    public function createW()
+    public function createView()
     {
         return view('create');
     }

@@ -17,16 +17,16 @@
                 <h1>Title: {{$new->title}}</h1>
             </div>
             <div class="col-1">
-                Autor: <a href="/findAuth/{{$new->user_id}}">{{User::find($new->user_id)->name}}</a>
+                Autor: <a href="/news/findByAuthor/{{User::find($new->user_id)->name}}">{{User::find($new->user_id)->name}}</a>
             </div>
             @if(\Illuminate\Support\Facades\Auth::id()==$new->user_id)
                 <div class="col-1">You are author</div>
-            @elseif(!App\Sub::where('user_id',\Illuminate\Support\Facades\Auth::id())->where('auth_id',$new->user_id)->get()->first())
+            @elseif(!App\Sub::where('user_id',\Illuminate\ Support\Facades\Auth::id())->where('author_id',$new->user_id)->get()->first())
                 <div class="col-1">
                     <form method="POST" action="{{url('/news/editSub')}}">
                         @csrf
                         <input type="hidden" name="key" value="1">
-                        <input type="hidden" name="auth_id" id="auth_id" value="{{$new->user_id}}">
+                        <input type="hidden" name="author_id" id="author_id" value="{{$new->user_id}}">
                         <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
                         <button class="btn-info"type="submit">Subscribe</button>
                     </form>
@@ -36,7 +36,7 @@
                 <form method="POST" action="{{url('/news/editSub')}}">
                     @csrf
                     <input type="hidden" name="key" value="0">
-                    <input type="hidden" name="auth_id" id="auth_id" value="{{$new->user_id}}">
+                    <input type="hidden" name="author_id" id="author_id" value="{{$new->user_id}}">
                     <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
                     <button class="btn-light"type="submit">Unsubscribe</button>
                 </form>
@@ -47,7 +47,7 @@
             <div class="col-4">
                 Tags:
                 @foreach($new->tags()->get() as $tags)
-                    <a href="/findTag/{{$tags->id}}">{{$tags->name.' '}}</a>|
+                    <a href="/news/findByTag/{{$tags->id}}">{{$tags->name.' '}}</a>|
                 @endforeach
             </div>
         </div>

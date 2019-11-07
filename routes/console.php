@@ -18,9 +18,11 @@ use Illuminate\Support\Facades\Storage;
 */
 
 Artisan::command('test', function () {
-    $images = Image::where('news_id', 10)->get();
-    foreach ($images as $image){
-        print_r($image->path);
-        Storage::delete('public/' . $image->path);
+        for($i = 0; $i<=10; $i++){
+            $arr[] = $i;
+        }
+        $arr1[] = 1;
+        $arr1[] = 10;
+        print_r($arr);
     }
-});
+);

@@ -2,6 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Notifications\NewPost;
+use App\Sub;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -10,19 +13,17 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class SendEmail implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
-    protected $user;
-    protected $mail;
+    private $news;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user,$mail)
+    public function __construct($news)
     {
-        $this->user = $user;
-        $this->mail = $mail;
+        $this->news = $news;
     }
 
     /**
@@ -32,6 +33,9 @@ class SendEmail implements ShouldQueue
      */
     public function handle()
     {
-        $this->user->notify($this->mail);
+        $mail = new NewPost($this->news,User::find($this->news->user_id)->name,'/news/' . $this->news->id);
+        foreach (Sub::where('author_id',$this->news->user_id)->get() as $sub){
+            User::find($sub->user_id)->notify($mail);
+        }
     }
 }

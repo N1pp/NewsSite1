@@ -18,10 +18,10 @@ class NewPost extends Notification
     protected $news;
     protected $auth;
     protected $url;
-    public function __construct($news,$auth,$url)
+    public function __construct($news,$author,$url)
     {
         $this->news = $news;
-        $this->auth = $auth;
+        $this->auth = $author;
         $this->url = $url;
     }
 

@@ -14,10 +14,10 @@ class CreateSubsTable extends Migration
     public function up()
     {
         Schema::create('subs', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('author_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('author_id')->unsigned();
             $table->timestamps();
-            $table->primary(['user_id','auth_id']);
+            $table->primary(['user_id','author_id']);
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
