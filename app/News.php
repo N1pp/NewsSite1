@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class News extends Model
 {
-    protected $fillable = ['user_id', 'rate', 'content', 'title', 'rate', 'comments'];
-    public function tags() : ?BelongsToMany
+    protected $fillable = ['rate', 'content', 'title', 'rate', 'comments'];
+
+    public function tags(): ?BelongsToMany
     {
         return $this->belongsToMany(Tags::class);
     }
-    public function images() : ?HasMany
+
+    public function images(): ?HasMany
     {
         return $this->hasMany(Image::class);
     }

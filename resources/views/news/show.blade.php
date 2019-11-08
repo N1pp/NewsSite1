@@ -27,7 +27,6 @@
                         @csrf
                         <input type="hidden" name="key" value="1">
                         <input type="hidden" name="author_id" id="author_id" value="{{$new->user_id}}">
-                        <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
                         <button class="btn-info"type="submit">Subscribe</button>
                     </form>
                 </div>
@@ -37,7 +36,6 @@
                     @csrf
                     <input type="hidden" name="key" value="0">
                     <input type="hidden" name="author_id" id="author_id" value="{{$new->user_id}}">
-                    <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
                     <button class="btn-light"type="submit">Unsubscribe</button>
                 </form>
             </div>
@@ -70,7 +68,6 @@
                     @csrf
                     <input type="hidden" name="value" value="1">
                     <input type="hidden" name="news_id" id="news" value="{{$new->id}}">
-                    <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
                     <input type="hidden" name="key" id="key" value="0">
                     <button class="btn-success" type="submit">Like</button>
                 </form>
@@ -80,7 +77,6 @@
                     @csrf
                     <input type="hidden" name="value" value="-1">
                     <input type="hidden" name="news_id" id="news" value="{{$new->id}}">
-                    <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
                     <input type="hidden" name="key" id="key" value="0">
                     <button class="btn-danger"type="submit">Dislike</button>
                 </form>
@@ -107,9 +103,8 @@
         @endforeach
     <form method="POST" action="{{url('/news/editComment')}}">
         @csrf
-        <input type="text" name="content" id="content">
+        <input type="text" name="cont" id="cont">
         <input type="hidden" name="news_id" id="news_id" value="{{$new->id}}">
-        <input type="hidden" name="user_id" id="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
         <input type="hidden" name="key" id="key" value="1">
         <button type="submit">Add comment</button>
     </form>

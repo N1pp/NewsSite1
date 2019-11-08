@@ -1,6 +1,7 @@
 <?php
 
 use App\Image;
+use App\Repositories\NewsRepository;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
@@ -18,11 +19,12 @@ use Illuminate\Support\Facades\Storage;
 */
 
 Artisan::command('test', function () {
-        for($i = 0; $i<=10; $i++){
-            $arr[] = $i;
-        }
-        $arr1[] = 1;
-        $arr1[] = 10;
-        print_r($arr);
-    }
-);
+    /*$arr[] = 10;
+    $arr['id'] = 11;
+    $arr[] = 12;
+    $arr[] = 13;
+    $arr['id'] = 1;*/
+    $arr = array();
+    $arr['id'] = 1;
+    print_r($arr);
+});

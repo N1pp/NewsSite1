@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Http\Requests\CommentCreateRequest;
 use App\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,16 +15,12 @@ class CommentController extends Controller
     {
         $this->middleware('auth');
     }
-    public function comment(Request $request){
-        $validator = Validator::make($request->all(),[
-            'content'=> 'required',
-        ]);
-        if($validator->errors()->any()){
-            return redirect()->back()
-                ->withInput()
-                ->withErrors($validator);
-        }
-        Comment::create($request->all());
+    public function comment(CommentCreateRequest $request){
+        $com = new Comment();
+        $com->user_id = \Illuminate\Support\Facades\Auth::id();
+        $com->content = $request->cont;
+        $com->news_id = $request->news_id;
+        $com->save;
         $count = Comment::where('news_id',$request->news_id)->count();
         $new = News::where('id',$request->news_id)->get()->first();
         $new->comments = $count;

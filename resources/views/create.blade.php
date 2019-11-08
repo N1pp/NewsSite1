@@ -18,7 +18,7 @@
         </div>
             <div class="form-group">
                 Введите информацию:
-                <input class="form-control" type="text" name="content">
+                <input class="form-control" type="text" name="cont">
             </div>
         <div class="form-group">
             Введите желаемые теги:
@@ -28,7 +28,6 @@
             Можете добавить картинку:
             <input type="file" name="img[]" multiple/>
         </div>
-        <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::id()}}">
         <button type="submit" class="btn btn-primary">Добавить</button>
     </form>
 </div>
